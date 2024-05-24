@@ -1,6 +1,7 @@
 import express, { Request, Response, urlencoded } from "express";
-import { BASE_ROOT, SERVER_PORT } from "./config";
+import { BASE_ROOT, SERVER_PORT, UPLOAD_ROOT } from "./config";
 import movieController from "./controllers/movies.controller";
+import uploadController from "./controllers/upload.controller";
 
 const app = express();
 
@@ -9,6 +10,7 @@ declare global {
   namespace Express {
     interface Request {
       user?: any;
+      filename?: string;
     }
   }
 }
@@ -17,6 +19,8 @@ declare global {
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
 app.use(`${BASE_ROOT}/movies`, movieController);
+app.use(`${BASE_ROOT}/upload`, uploadController);
+app.use(`${UPLOAD_ROOT}`, express.static("storage"));
 
 //check health
 app.get(BASE_ROOT, (req: Request, res: Response) => {
