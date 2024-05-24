@@ -4,6 +4,15 @@ import movieController from "./controllers/movies.controller";
 
 const app = express();
 
+//global
+declare global {
+  namespace Express {
+    interface Request {
+      user?: any;
+    }
+  }
+}
+
 //mid
 app.use(express.json());
 app.use(urlencoded({ extended: true }));
